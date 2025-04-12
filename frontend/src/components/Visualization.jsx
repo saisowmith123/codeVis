@@ -1,52 +1,56 @@
-import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 const Visualization = ({ visualizationData, loading }) => {
-  const [visualizationUrl, setVisualizationUrl] = useState("");
-
-  useEffect(() => {
-    if (visualizationData) {
-      if (visualizationData.type === "image") {
-        setVisualizationUrl(visualizationData.data);
-      } else if (visualizationData.type === "html") {
-        const htmlContent = visualizationData.data;
-        const blob = new Blob([htmlContent], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        setVisualizationUrl(url);
-
-        return () => URL.revokeObjectURL(url);
-      }
-    }
-  }, [visualizationData]);
+  const url = visualizationData?.url;
+  const isImage = url?.endsWith(".png");
 
   return (
-    <Card className="w-full mt-4">
-      <CardContent className="p-6">
-        <div className="flex flex-col items-center">
-          <h3 className="text-lg font-medium mb-4">Visualization Result</h3>
-          <div className="w-full h-[500px] border rounded-md overflow-hidden">
+    <div className="flex flex-col gap-2">
+      <Label className="text-md font-medium">Visualization Result</Label>
+
+      <Card className="w-full">
+        <CardContent className="p-6 space-y-4">
+          <div className="flex justify-between items-center">
+            {url && (
+              <Button variant="link" className="text-sm" asChild>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  Open in new tab <ExternalLink className="ml-1 w-4 h-4" />
+                </a>
+              </Button>
+            )}
+          </div>
+
+          <div className="w-full h-[500px] rounded-md border flex items-center justify-center bg-white">
             {loading ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <Skeleton className="w-full h-full" />
-              </div>
-            ) : visualizationUrl ? (
-              <iframe
-                src={visualizationUrl}
-                title="Visualization"
-                className="w-full h-full border-none"
-                sandbox="allow-scripts"
-              />
+              <Skeleton className="w-full h-full" />
+            ) : url ? (
+              isImage ? (
+                <img
+                  src={url}
+                  alt="Visualization"
+                  className="max-h-full max-w-full object-contain"
+                />
+              ) : (
+                <iframe
+                  src={url}
+                  title="Visualization"
+                  className="w-full h-full border-none"
+                  sandbox="allow-scripts"
+                />
+              )
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">
-                No visualization available. Generate one by submitting your
-                code.
+              <div className="text-gray-500 text-sm">
+                No visualization available. Submit your code to generate one.
               </div>
             )}
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

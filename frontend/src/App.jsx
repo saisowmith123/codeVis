@@ -6,8 +6,16 @@ import LanguageSelector from "./components/LanguageSelector";
 import CodeEditor from "./components/CodeEditor";
 import Visualization from "./components/Visualization";
 import apiService from "./services/api";
-
 import { saveCode, getSavedCode } from "./services/localStorage";
+import { PlayCircle } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Label } from "@/components/ui/label";
+import { Info } from "lucide-react";
 
 const App = () => {
   const [language, setLanguage] = useState("python");
@@ -55,31 +63,59 @@ const App = () => {
           </p>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <LanguageSelector
-              selectedLanguage={language}
-              onLanguageChange={setLanguage}
-            />
+        <div className="flex flex-col gap-8">
+          <div className="relative w-full flex flex-col gap-2">
+            <div className="flex justify-between items-end">
+              <div className="flex items-center gap-2">
+                <Label className="text-md font-medium">Code Editor</Label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="text-xs max-w-xs">
+                      Use <strong>matplotlib</strong> or <strong>plotly</strong>{" "}
+                      in Python.
+                      <br />
+                      Use <strong>ggplot2</strong>, <strong>plotly</strong>, or{" "}
+                      <strong>rgl</strong> in R.
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+
+              <LanguageSelector
+                selectedLanguage={language}
+                onLanguageChange={setLanguage}
+              />
+            </div>
+
             <CodeEditor
               language={language}
               code={code}
               onChange={handleCodeChange}
             />
-            <Button
-              onClick={handleGenerateVisualization}
-              className="w-full rounded-md cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  Generating
-                  <Spinner className="mr-2" />
-                </>
-              ) : (
-                "Generate Visualization"
-              )}
-            </Button>
+
+            <div className="absolute bottom-4 right-4 z-10">
+              <Button
+                onClick={handleGenerateVisualization}
+                size="sm"
+                className="rounded-sm"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    Generating
+                    <Spinner className="mr-2" />
+                  </>
+                ) : (
+                  <>
+                    Generate Visualization
+                    <PlayCircle className="w-5 h-5" />
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
 
           <div>

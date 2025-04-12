@@ -5,19 +5,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import { SiPython, SiR } from "react-icons/si";
 
 const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
   return (
-    <div className="space-y-2">
-      <Label htmlFor="language-select">Programming Language</Label>
+    <div>
       <Select value={selectedLanguage} onValueChange={onLanguageChange}>
-        <SelectTrigger id="language-select" className="w-full">
+        <SelectTrigger id="language-select" className="w-3xs">
           <SelectValue placeholder="Select a language" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="python">Python</SelectItem>
-          <SelectItem value="r">R</SelectItem>
+          <SelectItem value="python">
+            <SiPython className="text-[#3776AB]" />
+            Python
+          </SelectItem>
+          <SelectItem value="r">
+            <SiR className="text-[#276DC3]" />R
+          </SelectItem>
         </SelectContent>
       </Select>
     </div>
