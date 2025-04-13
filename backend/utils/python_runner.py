@@ -12,7 +12,8 @@ class PythonRunner(BaseRunner):
         return f"{self.file_id}.png"
 
     def preprocess_code(self):
-        output_path = f"/app/output/{self.get_output_filename()}"
+        # output_path = f"/app/output/{self.get_output_filename()}"
+        output_path = f"static/{self.get_output_filename()}"
         processed = self.code
 
         if "matplotlib" in self.code and "plt.show()" in self.code:
