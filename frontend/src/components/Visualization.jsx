@@ -24,7 +24,7 @@ const Visualization = ({ visualizationData, loading }) => {
             )}
           </div>
 
-          <div className="w-full h-[500px] rounded-md border flex items-center justify-center bg-white">
+          <div className="w-full h-[500px] rounded-md border flex items-center justify-center bg-white overflow-hidden p-4">
             {loading ? (
               <Skeleton className="w-full h-full" />
             ) : url ? (

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: cnsasgn-backend
+    env: docker
+    plan: free
+    branch: main
+    autoDeploy: true
+    repo: https://github.com/saisowmith123/visu-code
+    dockerfilePath: Dockerfile.fastapi
+    envVars:
+      - key: PORT
+        value: 8000
