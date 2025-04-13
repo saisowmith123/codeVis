@@ -36,12 +36,18 @@ async def generate_visualization(req: CodeRequest):
         with open(code_path, "w") as f:
             f.write(processed_code)
 
-        subprocess.run([
-            "docker", "run", "--rm",
-            "-v", f"{os.path.abspath('static')}:/app/output",
-            "-v", f"{code_path}:/app/script.{ext}",
-            runner.get_docker_image()
-        ], check=True)
+        # subprocess.run([
+        #     "docker", "run", "--rm",
+        #     "-v", f"{os.path.abspath('static')}:/app/output",
+        #     "-v", f"{code_path}:/app/script.{ext}",
+        #     runner.get_docker_image()
+        # ], check=True)
+
+        if req.language == "python":
+            subprocess.run(["python", code_path], check=True)
+        else:
+            subprocess.run(["Rscript", code_path], check=True)
+
 
         return {"url": f"http://localhost:8000/static/{runner.get_output_filename()}"}
 
